@@ -8,36 +8,20 @@ import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import tqdm  # optional
 
-DATASET = "Cornell"
+DATASET = "AoTM"
+SVD_DIR = "svds"
 SUBSAMPLE_POINTS = 1_000_000
 CUTOFF_F = 64
 COS_THETA_THRESHOLD = 0.9
 RHO_THRESHOLD = 0.5
 
-if DATASET == "AOTM":
-    U = np.load("svd/aotm/U.npy")
-    s = np.load("svd/aotm/S.npy")
-    V = np.load("svd/aotm/V.npy")
-    color = 'r'
+try:
+    U = np.load("{}/{}/U.npy".format(SVD_DIR, DATASET.lower()))
+    s = np.load("{}/{}/S.npy".format(SVD_DIR, DATASET.lower()))
+    V = np.load("{}/{}/V.npy".format(SVD_DIR, DATASET.lower()))
 
-elif DATASET == "Cornell":
-    U = np.load("svd/cornell/U.npy")
-    s = np.load("svd/cornell/S.npy")
-    V = np.load("svd/cornell/V.npy")
-    color = 'darkorange'
-
-elif DATASET == "LastFM":
-    U = np.load("svd/lastfm/U.npy")
-    s = np.load("svd/lastfm/S.npy")
-    V = np.load("svd/lastfm/V.npy")
-    color = 'm'
-
-elif DATASET == "Movielens":
-    U, s, V = np.load("svd/movielens/UsV.npy", allow_pickle=True)
-    color = 'c'
-
-else:
-    raise ValueError("Not uploaded or unavailable: `{}`".format(DATASET))
+except:
+    raise ValueError("Not uploaded or unavailable data: `{}`".format(DATASET))
 
 E = U * s
 del U, s, V
